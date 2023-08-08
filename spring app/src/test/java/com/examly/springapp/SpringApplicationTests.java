@@ -1,32 +1,35 @@
-package com.examly.springapp;
-
-import org.testng.annotations.Test;
-import java.net.URL;
-
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.testng.annotations.BeforeTest;
-import org.testng.Assert;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 
-public class SpringApplicationTests {
+public class AppTest {
+  private WebDriver driver;
+  private App app;
 
-    ChromeOptions chromeOptions = new ChromeOptions();
-    WebDriver driver = null;
+  @BeforeTest
+  public void setUp() {
+    System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+    driver = new ChromeDriver();
+    app = new App(driver);
+  }
 
-    @BeforeTest
-    public void beforeTest() throws Exception
-     {
-   // replace seleniumhost and port with correct values
-        driver = new RemoteWebDriver(new URL("http://<seleniumhost:port>/"), chromeOptions);
-        driver.manage().window().maximize();
-    }
+  @Test
+  public void testCountLinks() {
+    app.navigateTo("https://flipkart.com");
+    int count = app.countLinks();
+    System.out.println("Number of links: " + count);
+  }
 
-    @AfterTest
-    public void afterTest() 
-    {
-        driver.quit();
-    }
+  @Test
+  public void testPrintLinks() {
+    app.navigateTo("https://flipkart.com");
+    app.printLinks();
+  }
 
+  @AfterTest
+  public void tearDown() {
+    driver.quit();
+  }
 }

@@ -1,13 +1,29 @@
-package com.examly.springapp;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.By;
+import java.util.List;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+public class App {
+  private WebDriver driver;
 
-@SpringBootApplication
-public class SpringappApplication {
+  public App(WebDriver driver) {
+    this.driver = driver;
+  }
 
-	public static void main(String[] args) {
-		SpringApplication.run(SpringappApplication.class, args);
-	}
+  public void navigateTo(String url) {
+    driver.get(url);
+  }
 
+  public int countLinks() {
+    List<WebElement> links = driver.findElements(By.tagName("a"));
+    return links.size();
+  }
+
+  public void printLinks() {
+    List<WebElement> links = driver.findElements(By.tagName("a"));
+    for (WebElement link : links) {
+      System.out.println("Link text: " + link.getText());
+      System.out.println("Link URL: " + link.getAttribute("href"));
+    }
+  }
 }
